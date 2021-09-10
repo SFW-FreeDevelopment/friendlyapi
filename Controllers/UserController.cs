@@ -10,11 +10,11 @@ namespace FriendlyApi.Service.Controllers
 {
     [ApiController]
     [Route("users")]
-    public class UsersController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMongoRepository<User> _repository;
         
-        public UsersController(IMongoRepository<User> repository)
+        public UserController(IMongoRepository<User> repository)
         {
             _repository = repository;
         }
