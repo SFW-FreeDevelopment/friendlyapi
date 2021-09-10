@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendlyApi.Service", "FriendlyApi.Service\FriendlyApi.Service.csproj", "{E45DB502-5D09-4D48-BA90-B4C497CF3E9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendlyApi.Service", "FriendlyApi.Service.csproj", "{E45DB502-5D09-4D48-BA90-B4C497CF3E9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
