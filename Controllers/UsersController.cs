@@ -39,7 +39,7 @@ namespace FriendlyApi.Service.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = request.Username,
-                Password = request.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Email = request.Email
             };
             
@@ -59,7 +59,7 @@ namespace FriendlyApi.Service.Controllers
 
             if (!string.IsNullOrEmpty(request.Password))
             {
-                user.Password = request.Password;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
             }
 
             if (!string.IsNullOrEmpty(request.Email))
