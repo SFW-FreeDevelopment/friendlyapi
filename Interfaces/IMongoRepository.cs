@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
 
-namespace FriendlyApi.Service
+namespace FriendlyApi.Service.Interfaces
 {
     public interface IMongoRepository<T> where T : BaseResource
     {
         public Task<IEnumerable<User>> GetAll();
-        public Task<User> GetById(Guid id);
+        public Task<User> GetById(string id);
         public Task<User> Create(T data);
-        public Task<User> Update(Guid id, T data);
-        public Task Delete(Guid id);
+        public Task<User> Update(string id, T data);
+        public Task Delete(string id);
     }
 }
