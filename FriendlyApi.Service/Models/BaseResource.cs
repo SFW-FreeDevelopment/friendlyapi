@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Text.Json.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace FriendlyApi.Service.Models
 {
@@ -6,5 +7,9 @@ namespace FriendlyApi.Service.Models
     {
         [BsonId]
         public string Id { get; set; }
+        
+        [BsonElement("deleted")]
+        [JsonIgnore]
+        public bool Deleted { get; set; }
     }
 }

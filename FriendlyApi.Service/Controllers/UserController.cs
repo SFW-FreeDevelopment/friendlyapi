@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
@@ -32,7 +33,7 @@ namespace FriendlyApi.Service.Controllers
         }
         
         [HttpPost]
-        public async Task<User> Create(UserCreateUpdateRequest request)
+        public async Task<User> Create(UserCreateRequest request)
         {
             User newUser = new User
             {
@@ -47,7 +48,7 @@ namespace FriendlyApi.Service.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<User> Update(Guid id, UserCreateUpdateRequest request)
+        public async Task<User> Update(Guid id, UserUpdateRequest request)
         {
             User user = await _repository.GetById(id);
 
@@ -76,9 +77,9 @@ namespace FriendlyApi.Service.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
-        public async Task<User> Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            return await _repository.Delete(id);
+            await _repository.Delete(id);
         }
     }
 }

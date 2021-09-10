@@ -16,17 +16,19 @@ namespace FriendlyApi.Service.Repositories
 
         public UserRepository()
         {
-            _settings = MongoClientSettings.FromConnectionString("mongodb+srv://admin:f6U5vOzQN29Xpvpv@cluster0.xqhm9.mongodb.net/friendlyapi?connect=replicaSet&retryWrites=true&w=majority");
+            _settings = MongoClientSettings.FromConnectionString(
+                "mongodb+srv://admin:f6U5vOzQN29Xpvpv@cluster0.xqhm9.mongodb.net/friendlyapi?connect=replicaSet&retryWrites=true&w=majority");
             _client = new MongoClient(_settings);
             _database = _client.GetDatabase("friendlyapi");
             _userCollection = _database.GetCollection<User>("users");
         }
-        
+
         public async Task<IEnumerable<User>> GetAll()
         {
             try
-            { 
-                return await _userCollection.AsQueryable().ToListAsync();
+            {
+                List<User> userCollection = await _userCollection.AsQueryable().ToListAsync();
+                return userCollection.Where(x => x.Deleted == false);
             }
             catch (Exception e)
             {
@@ -40,7 +42,7 @@ namespace FriendlyApi.Service.Repositories
             try
             {
                 var userList = await _userCollection.AsQueryable().ToListAsync();
-                return userList.FirstOrDefault(x => x.Id == id.ToString());
+                return userList.FirstOrDefault(x => x.Id == id.ToString() && x.Deleted == false);
             }
             catch (Exception e)
             {
@@ -64,14 +66,35 @@ namespace FriendlyApi.Service.Repositories
             }
         }
 
-        public Task<User> Update(Guid id, User data)
+        public async Task<User> Update(Guid id, User data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _userCollection.UpdateOneAsync<User>(x => x.Id == id.ToString(),
+                    Builders<User>.Update.Set(x => x.Username, data.Username).Set(x => x.Password, data.Password)
+                        .Set(x => x.Email, data.Email).Set(x => x.PhoneNumber, data.PhoneNumber));
+                var userList = await _userCollection.AsQueryable().ToListAsync();
+                return userList.FirstOrDefault(x => x.Id == data.Id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        public Task<User> Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _userCollection.UpdateOneAsync<User>(x => x.Id == id.ToString(),
+                    Builders<User>.Update.Set(x => x.Deleted, true));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

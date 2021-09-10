@@ -12,6 +12,6 @@ namespace FriendlyApi.Service
         public Task<User> GetById(Guid id);
         public Task<User> Create(T data);
         public Task<User> Update(Guid id, T data);
-        public Task<User> Delete(Guid id);
+        public Task Delete(Guid id);
     }
 }
