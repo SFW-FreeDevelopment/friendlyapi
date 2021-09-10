@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using MongoDB.Driver;
 
@@ -37,7 +38,7 @@ namespace FriendlyApi.Service.Repositories
             }
         }
 
-        public async Task<User> GetById(Guid id)
+        public async Task<User> GetById(string id)
         {
             try
             {
@@ -66,7 +67,7 @@ namespace FriendlyApi.Service.Repositories
             }
         }
 
-        public async Task<User> Update(Guid id, User data)
+        public async Task<User> Update(string id, User data)
         {
             try
             {
@@ -83,7 +84,7 @@ namespace FriendlyApi.Service.Repositories
             }
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(string id)
         {
             try
             {

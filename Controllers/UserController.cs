@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
+using FriendlyApi.Service.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace FriendlyApi.Service.Controllers
 {
@@ -12,74 +16,45 @@ namespace FriendlyApi.Service.Controllers
     [Route("users")]
     public class UserController : ControllerBase
     {
-        private readonly IMongoRepository<User> _repository;
+        private readonly UserService _service;
         
-        public UserController(IMongoRepository<User> repository)
+        public UserController(UserService service)
         {
-            _repository = repository;
+            _service = service;
         }
         
         [HttpGet]
         public async Task<IEnumerable<User>> GetAll()
         {
-            return await _repository.GetAll();
+            return await _service.GetAll();
         }
         
         [HttpGet]
         [Route("{id:guid}")]
         public async Task<User> GetById(Guid id)
         {
-            return await _repository.GetById(id);
+            return await _service.GetById(id);
         }
         
         [HttpPost]
         public async Task<User> Create(UserCreateRequest request)
         {
-            User newUser = new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = request.Username,
-                Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                Email = request.Email
-            };
-            
-            return await _repository.Create(newUser);
+            return await _service.Create(request);
         }
 
         [HttpPut]
         [Route("{id:guid}")]
         public async Task<User> Update(Guid id, UserUpdateRequest request)
         {
-            User user = await _repository.GetById(id);
-
-            if (!string.IsNullOrEmpty(request.Username))
-            {
-                user.Username = request.Username;
-            }
-
-            if (!string.IsNullOrEmpty(request.Password))
-            {
-                user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            }
-
-            if (!string.IsNullOrEmpty(request.Email))
-            {
-                user.Email = request.Email;
-            }
-
-            if (!string.IsNullOrEmpty(request.PhoneNumber))
-            {
-                user.PhoneNumber = request.PhoneNumber;
-            }
-            
-            return await _repository.Update(id, user);
+            return await _service.Update(id, request);
         }
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [SwaggerResponse(StatusCodes.Status204NoContent, null)]
         public async Task Delete(Guid id)
         {
-            await _repository.Delete(id);
+            await _service.Delete(id);
         }
     }
 }

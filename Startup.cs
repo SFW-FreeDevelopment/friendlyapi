@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Repositories;
+using FriendlyApi.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,8 @@ namespace FriendlyApi.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMongoRepository<User>, UserRepository>();
+
+            services.AddScoped<UserService>();
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
