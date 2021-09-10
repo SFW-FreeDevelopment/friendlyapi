@@ -32,7 +32,7 @@ namespace FriendlyApi.Service.Controllers
         }
         
         [HttpPost]
-        public async Task<User> Create(UserCreateRequest request)
+        public async Task<User> Create(UserCreateUpdateRequest request)
         {
             User newUser = new User
             {
@@ -47,9 +47,31 @@ namespace FriendlyApi.Service.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<User> Update(Guid id, User request)
+        public async Task<User> Update(Guid id, UserCreateUpdateRequest request)
         {
-            return await _repository.Update(id, request);
+            User user = await _repository.GetById(id);
+
+            if (!string.IsNullOrEmpty(request.Username))
+            {
+                user.Username = request.Username;
+            }
+
+            if (!string.IsNullOrEmpty(request.Password))
+            {
+                user.Password = request.Password;
+            }
+
+            if (!string.IsNullOrEmpty(request.Email))
+            {
+                user.Email = request.Email;
+            }
+
+            if (!string.IsNullOrEmpty(request.PhoneNumber))
+            {
+                user.PhoneNumber = request.PhoneNumber;
+            }
+            
+            return await _repository.Update(id, user);
         }
 
         [HttpDelete]
