@@ -15,25 +15,29 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace FriendlyApi.Service
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+        
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMongoRepository<User>, UserRepository>();
 
-            services.AddScoped<UserService>();
+            var mongoDbConnectionString = _configuration["ConnectionStrings:Mongo"];
+            services.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(MongoClientSettings.FromConnectionString(mongoDbConnectionString)));
             
+            services.AddScoped<UserService>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
