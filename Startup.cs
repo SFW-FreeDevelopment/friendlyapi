@@ -41,6 +41,7 @@ namespace FriendlyApi.Service
             services.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(MongoClientSettings.FromConnectionString(mongoDbConnectionString)));
             
             services.AddScoped<UserService>();
+            services.AddScoped<AuthService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
