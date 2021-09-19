@@ -8,7 +8,6 @@ namespace FriendlyApi.Service.Models
         [BsonId]
         public string Id { get; set; }
         
-        [BsonElement("deleted")]
         [JsonIgnore]
         public bool Deleted { get; set; }
     }
