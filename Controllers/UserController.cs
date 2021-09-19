@@ -52,9 +52,10 @@ namespace FriendlyApi.Service.Controllers
         [HttpDelete]
         [Route("{id:guid}")]
         [SwaggerResponse(StatusCodes.Status204NoContent, null)]
-        public async Task Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _service.Delete(id);
+            return NoContent();
         }
     }
 }
