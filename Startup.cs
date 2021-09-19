@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
 namespace FriendlyApi.Service
@@ -33,6 +34,9 @@ namespace FriendlyApi.Service
         {
             services.AddScoped<IMongoRepository<User>, UserRepository>();
 
+            var conventionPack = new  ConventionPack {new CamelCaseElementNameConvention()};
+            ConventionRegistry.Register("camelCase", conventionPack, t => true);
+            
             var mongoDbConnectionString = _configuration["ConnectionStrings:Mongo"];
             services.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(MongoClientSettings.FromConnectionString(mongoDbConnectionString)));
             
