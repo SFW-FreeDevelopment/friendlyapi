@@ -24,6 +24,9 @@ namespace FriendlyApi.Service.Controllers
         }
         
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IEnumerable<User>> GetAll()
         {
             return await _service.GetAll();
@@ -31,12 +34,19 @@ namespace FriendlyApi.Service.Controllers
         
         [HttpGet]
         [Route("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<User> GetById(Guid id)
         {
             return await _service.GetById(id);
         }
         
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<User> Create(UserCreateRequest request)
         {
             return await _service.Create(request);
@@ -44,6 +54,10 @@ namespace FriendlyApi.Service.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<User> Update(Guid id, UserUpdateRequest request)
         {
             return await _service.Update(id, request);
@@ -51,7 +65,9 @@ namespace FriendlyApi.Service.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
-        [SwaggerResponse(StatusCodes.Status204NoContent, null)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _service.Delete(id);
