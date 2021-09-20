@@ -22,8 +22,9 @@ namespace FriendlyApi.Service.Repositories
         {
             try
             {
-                List<User> userCollection = await GetCollection().AsQueryable().ToListAsync();
-                return userCollection.Where(x => x.Deleted == false);
+                List<User> userCollection = await GetCollection().AsQueryable()
+                    .Where(u => !u.Deleted).ToListAsync();
+                return userCollection;
             }
             catch (Exception e)
             {
@@ -36,8 +37,9 @@ namespace FriendlyApi.Service.Repositories
         {
             try
             {
-                var userList = await GetCollection().AsQueryable().ToListAsync();
-                return userList.FirstOrDefault(x => x.Id == id.ToString() && x.Deleted == false);
+                var user = await GetCollection().AsQueryable()
+                    .FirstOrDefaultAsync(u => u.Id == id && !u.Deleted);
+                return user;
             }
             catch (Exception e)
             {
@@ -65,11 +67,11 @@ namespace FriendlyApi.Service.Repositories
         {
             try
             {
-                await GetCollection().UpdateOneAsync<User>(x => x.Id == id.ToString(),
+                await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
                     Builders<User>.Update.Set(x => x.Username, data.Username).Set(x => x.Password, data.Password)
                         .Set(x => x.Email, data.Email).Set(x => x.PhoneNumber, data.PhoneNumber));
-                var userList = await GetCollection().AsQueryable().ToListAsync();
-                return userList.FirstOrDefault(x => x.Id == data.Id);
+                
+                return await GetCollection().AsQueryable().FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
             {
@@ -82,7 +84,7 @@ namespace FriendlyApi.Service.Repositories
         {
             try
             {
-                await GetCollection().UpdateOneAsync<User>(x => x.Id == id.ToString(),
+                await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
                     Builders<User>.Update.Set(x => x.Deleted, true));
             }
             catch (Exception e)
