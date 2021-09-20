@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FriendlyApi.Service.Exceptions;
 using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
@@ -32,15 +33,7 @@ namespace FriendlyApi.Service.Services
         
         public async Task<User> GetById(Guid id)
         {
-            try
-            {
-                return await _repository.GetById(id.ToString());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return await _repository.GetById(id.ToString());
         }
         
         public async Task<User> Create(UserCreateRequest request)
