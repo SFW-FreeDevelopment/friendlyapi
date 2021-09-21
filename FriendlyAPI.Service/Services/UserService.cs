@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.Http;
 using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
-using FriendlyApi.Service.Repositories;
 
 namespace FriendlyApi.Service.Services
 {
@@ -36,7 +36,7 @@ namespace FriendlyApi.Service.Services
             {
                 return await _repository.GetById(id.ToString());
             }
-            catch (Exception e)
+            catch (HttpResponseException e)
             {
                 Console.WriteLine(e);
                 throw;

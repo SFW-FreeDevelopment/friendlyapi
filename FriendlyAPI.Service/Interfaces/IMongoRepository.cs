@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FriendlyApi.Service.Models;
-using FriendlyApi.Service.Models.Requests;
 
 namespace FriendlyApi.Service.Interfaces
 {

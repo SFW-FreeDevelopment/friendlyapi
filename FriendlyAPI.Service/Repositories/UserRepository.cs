@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FriendlyApi.Service.Interfaces;
@@ -20,78 +19,38 @@ namespace FriendlyApi.Service.Repositories
 
         public async Task<IEnumerable<User>> GetAll()
         {
-            try
-            {
-                List<User> userCollection = await GetCollection().AsQueryable()
-                    .Where(u => !u.Deleted).ToListAsync();
-                return userCollection;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            List<User> userCollection = await GetCollection().AsQueryable()
+                .Where(u => !u.Deleted).ToListAsync();
+            return userCollection;
         }
 
         public async Task<User> GetById(string id)
         {
-            try
-            {
-                var user = await GetCollection().AsQueryable()
-                    .FirstOrDefaultAsync(u => u.Id == id && !u.Deleted);
-                return user;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            var user = await GetCollection().AsQueryable()
+                .FirstOrDefaultAsync(u => u.Id == id && !u.Deleted);
+            return user;
         }
 
         public async Task<User> Create(User data)
         {
-            try
-            {
-                await GetCollection().InsertOneAsync(data);
-                var userList = await GetCollection().AsQueryable().ToListAsync();
-                return userList.FirstOrDefault(x => x.Id == data.Id);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            await GetCollection().InsertOneAsync(data);
+            var userList = await GetCollection().AsQueryable().ToListAsync();
+            return userList.FirstOrDefault(x => x.Id == data.Id);
         }
 
         public async Task<User> Update(string id, User data)
         {
-            try
-            {
-                await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
-                    Builders<User>.Update.Set(x => x.Username, data.Username).Set(x => x.Password, data.Password)
-                        .Set(x => x.Email, data.Email).Set(x => x.PhoneNumber, data.PhoneNumber));
-                
-                return await GetCollection().AsQueryable().FirstOrDefaultAsync(u => u.Id == id);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
+                Builders<User>.Update.Set(x => x.Username, data.Username).Set(x => x.Password, data.Password)
+                    .Set(x => x.Email, data.Email).Set(x => x.PhoneNumber, data.PhoneNumber));
+
+            return await GetCollection().AsQueryable().FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task Delete(string id)
         {
-            try
-            {
-                await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
-                    Builders<User>.Update.Set(x => x.Deleted, true));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
+                Builders<User>.Update.Set(x => x.Deleted, true));
         }
 
         private IMongoCollection<User> GetCollection()
