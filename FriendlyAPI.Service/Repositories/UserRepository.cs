@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
+using FriendlyApi.Service.Repositories.Interfaces;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

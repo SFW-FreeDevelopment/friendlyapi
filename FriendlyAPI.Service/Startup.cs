@@ -1,6 +1,6 @@
-using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Repositories;
+using FriendlyApi.Service.Repositories.Interfaces;
 using FriendlyApi.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

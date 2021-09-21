@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using FriendlyApi.Service.Models;
 
-namespace FriendlyApi.Service.Interfaces
+namespace FriendlyApi.Service.Repositories.Interfaces
 {
     public interface IMongoRepository<T> where T : BaseResource
     {

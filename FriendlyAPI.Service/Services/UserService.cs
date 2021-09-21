@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using FriendlyApi.Service.Exceptions;
-using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
+using FriendlyApi.Service.Repositories.Interfaces;
+using FriendlyApi.Service.Services.Interfaces;
 
 namespace FriendlyApi.Service.Services
 {
-    public class UserService
+    public class UserService : IResourceService<User>
     {
         private readonly IMongoRepository<User> _repository;
 
