@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FriendlyApi.Service.Exceptions;
 using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using MongoDB.Driver;
@@ -30,7 +28,7 @@ namespace FriendlyApi.Service.Repositories
         {
             var user = await GetCollection().AsQueryable()
                 .FirstOrDefaultAsync(u => u.Id == id && !u.Deleted);
-            return user ?? throw new NotFoundException();
+            return user;
         }
 
         public async Task<User> Create(User data)

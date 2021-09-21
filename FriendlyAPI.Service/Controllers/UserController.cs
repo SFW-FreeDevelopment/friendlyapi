@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
-using FriendlyApi.Service.Exceptions;
-using FriendlyApi.Service.Interfaces;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
 using FriendlyApi.Service.Models.Responses;
@@ -27,9 +24,9 @@ namespace FriendlyApi.Service.Controllers
         
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(IEnumerable<User>))]
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return await _service.GetAll();
+            return Ok(await _service.GetAll());
         }
         
         [HttpGet]
@@ -37,19 +34,20 @@ namespace FriendlyApi.Service.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(User))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
-        [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "", typeof(ErrorResponse))]
-        public async Task<User> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return await _service.GetById(id);
+            var resource = await _service.GetById(id);
+            return resource != null ? Ok(resource) : NotFound();
         }
         
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(User))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "", typeof(ErrorResponse))]
-        public async Task<User> Create(UserCreateRequest request)
+        public async Task<IActionResult> Create(UserCreateRequest request)
         {
-            return await _service.Create(request);
+            var resource = await _service.Create(request);
+            return resource != null ? Created($"/users/{resource.Id}", request) : UnprocessableEntity();
         }
 
         [HttpPut]
@@ -58,9 +56,10 @@ namespace FriendlyApi.Service.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "", typeof(ErrorResponse))]
-        public async Task<User> Update(Guid id, UserUpdateRequest request)
+        public async Task<IActionResult> Update(Guid id, UserUpdateRequest request)
         {
-            return await _service.Update(id, request);
+            var resource = await _service.Update(id, request);
+            return resource != null ? Ok(resource) : NotFound();
         }
 
         [HttpDelete]
