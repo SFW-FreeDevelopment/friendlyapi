@@ -1,3 +1,4 @@
+using FriendlyApi.Service.Exceptions;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Repositories;
 using FriendlyApi.Service.Repositories.Interfaces;
@@ -36,7 +37,7 @@ namespace FriendlyApi.Service
             services.AddScoped<UserService>();
             services.AddScoped<UserProfileService>();
 
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(new ApiExceptionFilter()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FriendlyApi.Service", Version = "v1" });

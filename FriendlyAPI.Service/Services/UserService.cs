@@ -28,7 +28,7 @@ namespace FriendlyApi.Service.Services
         {
             var user = await _repository.GetById(id.ToString());
             // TODO: Add validation in case we get an error calling the profile
-            user.Profile = await _profileRepository.GetById(id.ToString());
+            //user.Profile = await _profileRepository.GetById(id.ToString());
             
             if (user == null)
                 throw new NotFoundException(id);
