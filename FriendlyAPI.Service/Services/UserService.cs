@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Http;
 using FriendlyApi.Service.Exceptions;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Models.Requests;
 using FriendlyApi.Service.Repositories.Interfaces;
-using FriendlyApi.Service.Services.Interfaces;
 
 namespace FriendlyApi.Service.Services
 {
-    public class UserService : IResourceService<User>
+    public class UserService
     {
         private readonly IMongoRepository<User> _repository;
+        private readonly IMongoRepository<UserProfile> _profileRepository;
 
-        public UserService(IMongoRepository<User> repository)
+        public UserService(IMongoRepository<User> repository, IMongoRepository<UserProfile> profileRepository)
         {
             _repository = repository;
+            _profileRepository = profileRepository;
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -27,6 +27,8 @@ namespace FriendlyApi.Service.Services
         public async Task<User> GetById(Guid id)
         {
             var user = await _repository.GetById(id.ToString());
+            // TODO: Add validation in case we get an error calling the profile
+            user.Profile = await _profileRepository.GetById(id.ToString());
             
             if (user == null)
                 throw new NotFoundException(id);
@@ -71,9 +73,9 @@ namespace FriendlyApi.Service.Services
             return await _repository.Update(id.ToString(), user);
         }
         
-        public async Task Delete(Guid id)
+        public async Task Delete(Guid id, bool hardDelete = false)
         {
-            await _repository.Delete(id.ToString());
+            await _repository.Delete(id.ToString(), hardDelete);
         }
     }
 }

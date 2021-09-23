@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace FriendlyApi.Service.Models
@@ -8,6 +9,14 @@ namespace FriendlyApi.Service.Models
         [BsonId]
         public string Id { get; set; }
         
+        public string OwnerId { get; set; }
+        
+        public DateTime CreatedAt { get; set; }
+        
+        public DateTime UpdatedAt { get; set; }
+
+        public int Version { get; set; } = 1;
+
         [JsonIgnore]
         public bool Deleted { get; set; }
     }
