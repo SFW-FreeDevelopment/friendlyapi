@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FriendlyApi.Service.Exceptions;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Repositories.Interfaces;
 using MongoDB.Driver;
@@ -29,7 +30,7 @@ namespace FriendlyApi.Service.Repositories
         {
             var profile = await GetCollection().AsQueryable()
                 .FirstOrDefaultAsync(u => u.Id == id && !u.Deleted);
-            return profile;
+            return profile ?? throw new NotFoundException(id);
         }
 
         public async Task<UserProfile> GetByOwnerId(string id)
