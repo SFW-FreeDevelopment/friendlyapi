@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FriendlyApi.Service.Exceptions;
 using FriendlyApi.Service.Models;
 using FriendlyApi.Service.Repositories.Interfaces;
 using MongoDB.Driver;
@@ -29,7 +30,7 @@ namespace FriendlyApi.Service.Repositories
         {
             var user = await GetCollection().AsQueryable()
                 .FirstOrDefaultAsync(u => u.Id == id && !u.Deleted);
-            return user;
+            return user ?? throw new NotFoundException(id);
         }
 
         public Task<User> GetByOwnerId(string id)
@@ -41,7 +42,33 @@ namespace FriendlyApi.Service.Repositories
         {
             data.CreatedAt = DateTime.UtcNow;
             data.UpdatedAt = DateTime.UtcNow;
-            await GetCollection().InsertOneAsync(data);
+            try
+            {
+                await GetCollection().InsertOneAsync(data);
+            }
+            catch (MongoWriteException mwe)
+            {
+                var writeError = mwe.WriteError;
+                
+                switch (writeError.Category)
+                {
+                    case ServerErrorCategory.DuplicateKey when writeError.Message.Contains("usernameIdx"):
+                        throw new InvalidRequestException("User with this username already exists!");
+                    case ServerErrorCategory.DuplicateKey when writeError.Message.Contains("emailIdx"):
+                        throw new InvalidRequestException("This email address is already in use!");
+                    case ServerErrorCategory.Uncategorized:
+                        break;
+                    case ServerErrorCategory.ExecutionTimeout:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             var userList = await GetCollection().AsQueryable().ToListAsync();
             return userList.FirstOrDefault(x => x.Id == data.Id);
         }
