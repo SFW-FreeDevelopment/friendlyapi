@@ -22,6 +22,7 @@ namespace FriendlyApi.Service.Controllers
             _service = service;
         }
         
+        [Obsolete]
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(IEnumerable<User>))]
         public async Task<IActionResult> GetAll()
@@ -29,8 +30,14 @@ namespace FriendlyApi.Service.Controllers
             return Ok(await _service.GetAll());
         }
         
-        [HttpGet]
-        [Route("{id:guid}")]
+        [HttpGet("search")]
+        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(IEnumerable<User>))]
+        public async Task<IActionResult> Search()
+        {
+            throw new NotImplementedException();
+        }
+        
+        [HttpGet("{id:guid}")]
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(User))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
@@ -50,8 +57,7 @@ namespace FriendlyApi.Service.Controllers
             return resource != null ? Created($"/users/{resource.Id}", request) : UnprocessableEntity();
         }
 
-        [HttpPut]
-        [Route("{id:guid}")]
+        [HttpPut("{id:guid}")]
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(User))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
@@ -62,8 +68,7 @@ namespace FriendlyApi.Service.Controllers
             return resource != null ? Ok(resource) : NotFound();
         }
 
-        [HttpDelete]
-        [Route("{id:guid}")]
+        [HttpDelete("{id:guid}")]
         [SwaggerResponse(StatusCodes.Status200OK, null, typeof(User))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]

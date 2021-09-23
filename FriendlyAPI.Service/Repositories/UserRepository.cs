@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FriendlyApi.Service.Models;
@@ -31,8 +32,15 @@ namespace FriendlyApi.Service.Repositories
             return user;
         }
 
+        public Task<User> GetByOwnerId(string id)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<User> Create(User data)
         {
+            data.CreatedAt = DateTime.UtcNow;
+            data.UpdatedAt = DateTime.UtcNow;
             await GetCollection().InsertOneAsync(data);
             var userList = await GetCollection().AsQueryable().ToListAsync();
             return userList.FirstOrDefault(x => x.Id == data.Id);
@@ -40,6 +48,8 @@ namespace FriendlyApi.Service.Repositories
 
         public async Task<User> Update(string id, User data)
         {
+            data.UpdatedAt = DateTime.UtcNow;
+            data.Version++;
             await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
                 Builders<User>.Update.Set(x => x.Username, data.Username).Set(x => x.Password, data.Password)
                     .Set(x => x.Email, data.Email).Set(x => x.PhoneNumber, data.PhoneNumber));
@@ -47,10 +57,17 @@ namespace FriendlyApi.Service.Repositories
             return await GetCollection().AsQueryable().FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task Delete(string id)
+        public async Task Delete(string id, bool hardDelete = false)
         {
-            await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
-                Builders<User>.Update.Set(x => x.Deleted, true));
+            if (hardDelete)
+            {
+                await GetCollection().DeleteOneAsync(x => x.Id == id);
+            }
+            else
+            {
+                await GetCollection().UpdateOneAsync<User>(x => x.Id == id,
+                    Builders<User>.Update.Set(x => x.Deleted, true));
+            }
         }
 
         private IMongoCollection<User> GetCollection()

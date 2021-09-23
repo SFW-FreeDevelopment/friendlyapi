@@ -25,6 +25,7 @@ namespace FriendlyApi.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IMongoRepository<User>, UserRepository>();
+            services.AddScoped<IMongoRepository<UserProfile>, UserProfileRepository>();
 
             var conventionPack = new  ConventionPack {new CamelCaseElementNameConvention()};
             ConventionRegistry.Register("camelCase", conventionPack, t => true);
@@ -33,6 +34,7 @@ namespace FriendlyApi.Service
             services.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(MongoClientSettings.FromConnectionString(mongoDbConnectionString)));
             
             services.AddScoped<UserService>();
+            services.AddScoped<UserProfileService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
