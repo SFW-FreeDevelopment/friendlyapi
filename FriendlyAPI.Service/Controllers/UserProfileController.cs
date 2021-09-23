@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace FriendlyApi.Service.Controllers
 {
     [ApiController]
-    [Route("users/{userId:guid}/userProfile")]
+    [Route("users/{id:guid}/userProfile")]
     public class UserProfileController : ControllerBase
     {
         private readonly UserProfileService _service;

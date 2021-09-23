@@ -15,6 +15,7 @@ namespace FriendlyApi.Service.Models
         public User(UserCreateRequest request)
         {
             Id = Guid.NewGuid().ToString();
+            OwnerId = Id;
             Username = request.Username;
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
             Email = request.Email;
