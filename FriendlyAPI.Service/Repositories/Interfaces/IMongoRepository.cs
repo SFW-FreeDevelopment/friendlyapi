@@ -6,10 +6,10 @@ namespace FriendlyApi.Service.Repositories.Interfaces
 {
     public interface IMongoRepository<T> where T : BaseResource
     {
-        public Task<IEnumerable<User>> GetAll();
-        public Task<User> GetById(string id);
-        public Task<User> Create(T data);
-        public Task<User> Update(string id, T data);
+        public Task<IEnumerable<T>> GetAll();
+        public Task<T> GetById(string id);
+        public Task<T> Create(T data);
+        public Task<T> Update(string id, T data);
         public Task Delete(string id);
     }
 }
