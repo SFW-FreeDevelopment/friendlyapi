@@ -27,12 +27,16 @@ namespace FriendlyApi.Service.Services
         public async Task<User> GetById(Guid id)
         {
             var user = await _repository.GetById(id.ToString());
-            // TODO: Add validation in case we get an error calling the profile
-            //user.Profile = await _profileRepository.GetById(id.ToString());
-            
-            if (user == null)
-                throw new NotFoundException(id);
-            
+
+            try
+            {
+                user.Profile = await _profileRepository.GetById(id.ToString());
+            }
+            catch (Exception)
+            {
+                user.Profile = null;
+            }
+
             return user;
         }
         
