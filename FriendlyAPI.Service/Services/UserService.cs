@@ -11,9 +11,9 @@ namespace FriendlyApi.Service.Services
     public class UserService
     {
         private readonly IMongoRepository<User> _repository;
-        private readonly IMongoRepository<UserProfile> _profileRepository;
+        private readonly IMongoRepository<Profile> _profileRepository;
 
-        public UserService(IMongoRepository<User> repository, IMongoRepository<UserProfile> profileRepository)
+        public UserService(IMongoRepository<User> repository, IMongoRepository<Profile> profileRepository)
         {
             _repository = repository;
             _profileRepository = profileRepository;

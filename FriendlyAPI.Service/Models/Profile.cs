@@ -3,7 +3,7 @@ using FriendlyApi.Service.Models.Requests;
 
 namespace FriendlyApi.Service.Models
 {
-    public class UserProfile : BaseResource
+    public class Profile : BaseResource
     {
         public string FirstName { get; set; }
         
@@ -15,8 +15,8 @@ namespace FriendlyApi.Service.Models
         
         public string AvatarUrl { get; set; }
         
-        public UserProfile() { }
-        public UserProfile(string ownerId, UserProfileCreateRequest request)
+        public Profile() { }
+        public Profile(string ownerId, ProfileCreateRequest request)
         {
             Id = ownerId;
             OwnerId = ownerId;

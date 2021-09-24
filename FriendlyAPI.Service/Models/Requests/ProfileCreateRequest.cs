@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FriendlyApi.Service.Models.Requests
 {
-    public class UserProfileCreateRequest
+    public class ProfileCreateRequest
     {
         [Required]
         public string FirstName { get; set; }

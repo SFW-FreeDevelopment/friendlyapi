@@ -9,7 +9,7 @@ namespace FriendlyApi.Service.Models
         public string Password { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public UserProfile Profile { get; set; }
+        public Profile Profile { get; set; }
         
         public User() { }
         public User(UserCreateRequest request)

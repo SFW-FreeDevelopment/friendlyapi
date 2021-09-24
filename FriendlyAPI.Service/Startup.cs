@@ -33,7 +33,7 @@ namespace FriendlyApi.Service
             }));
             
             services.AddScoped<IMongoRepository<User>, UserRepository>();
-            services.AddScoped<IMongoRepository<UserProfile>, UserProfileRepository>();
+            services.AddScoped<IMongoRepository<Profile>, ProfileRepository>();
 
             var conventionPack = new  ConventionPack {new CamelCaseElementNameConvention()};
             ConventionRegistry.Register("camelCase", conventionPack, t => true);
@@ -42,7 +42,7 @@ namespace FriendlyApi.Service
             services.AddScoped<IMongoClient, MongoClient>(_ => new MongoClient(MongoClientSettings.FromConnectionString(mongoDbConnectionString)));
             
             services.AddScoped<UserService>();
-            services.AddScoped<UserProfileService>();
+            services.AddScoped<ProfileService>();
 
             services.AddControllers(options => options.Filters.Add(new ApiExceptionFilter()));
             services.AddSwaggerGen(c =>

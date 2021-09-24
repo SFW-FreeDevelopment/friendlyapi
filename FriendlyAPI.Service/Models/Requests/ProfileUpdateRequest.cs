@@ -1,6 +1,6 @@
 namespace FriendlyApi.Service.Models.Requests
 {
-    public class UserProfileUpdateRequest
+    public class ProfileUpdateRequest
     {
         public string Biography { get; set; }
         

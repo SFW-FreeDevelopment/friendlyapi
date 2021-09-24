@@ -11,18 +11,18 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace FriendlyApi.Service.Controllers
 {
     [ApiController]
-    [Route("users/{id:guid}/userProfile")]
-    public class UserProfileController : ControllerBase
+    [Route("users/{id:guid}/profile")]
+    public class ProfileController : ControllerBase
     {
-        private readonly UserProfileService _service;
+        private readonly ProfileService _service;
         
-        public UserProfileController(UserProfileService service)
+        public ProfileController(ProfileService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(UserProfile))]
+        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(Profile))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
         public async Task<IActionResult> GetById(Guid id)
@@ -32,28 +32,28 @@ namespace FriendlyApi.Service.Controllers
         }
         
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(UserProfile))]
+        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(Profile))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "", typeof(ErrorResponse))]
-        public async Task<IActionResult> Create(Guid id, UserProfileCreateRequest request)
+        public async Task<IActionResult> Create(Guid id, ProfileCreateRequest request)
         {
             var resource = await _service.Create(id, request);
             return resource != null ? Created($"/users/{id}/usersProfile", request) : UnprocessableEntity();
         }
 
         [HttpPut]
-        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(UserProfile))]
+        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(Profile))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "", typeof(ErrorResponse))]
-        public async Task<IActionResult> Update(Guid id, UserProfileUpdateRequest request)
+        public async Task<IActionResult> Update(Guid id, ProfileUpdateRequest request)
         {
             var resource = await _service.Update(id, request);
             return resource != null ? Ok(resource) : NotFound();
         }
 
         [HttpDelete]
-        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(UserProfile))]
+        [SwaggerResponse(StatusCodes.Status200OK, null, typeof(Profile))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, null, typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "", typeof(ErrorResponse))]
